@@ -2,6 +2,7 @@
 TEAM 5
 
 Here's some instructions for merging (in case you guys need it):
+
 https://stackoverflow.com/questions/19216411/how-do-i-pull-files-from-remote-without-overwriting-local-files/19216491
 
 1) git status
