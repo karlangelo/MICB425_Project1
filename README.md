@@ -10,7 +10,7 @@ You're going to pull some changes, but oops, you're not up to date:
 1) git fetch origin
 2) git pull origin master  
 
-POSSIBLE ERROR #1
+## POSSIBLE ERROR #1
 
 From ssh://gitosis@example.com:22/projectname
  * branch            master     -> FETCH_HEAD
@@ -21,9 +21,9 @@ So you get up-to-date and try again, but have a conflict:
 
 3) git add filename.c
 4) git commit -m "made some wild and crazy changes"
-5) git pull origin master  
+5) git pull origin master
 
-POSSIBLE ERROR #2
+## POSSIBLE ERROR #2
 
 From ssh://gitosis@example.com:22/projectname
  * branch            master     -> FETCH_HEAD
