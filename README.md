@@ -1,3 +1,4 @@
+
 # MICB425_Project1
 TEAM 5
 
@@ -10,6 +11,7 @@ You're going to pull some changes, but oops, you're not up to date:
 2) git pull origin master  
 
 POSSIBLE ERROR #1
+
 From ssh://gitosis@example.com:22/projectname
  * branch            master     -> FETCH_HEAD
 Updating a030c3a..ee25213
@@ -21,6 +23,7 @@ So you get up-to-date and try again, but have a conflict:
 5) git pull origin master  
 
 POSSIBLE ERROR #2
+
 From ssh://gitosis@example.com:22/projectname
  * branch            master     -> FETCH_HEAD
 Auto-merging filename.c
@@ -36,6 +39,7 @@ Oh me, oh my, upstream changed some things, but just to use my changes...no...th
 7) git commit -m "using theirs"  
 
 And then we try a final time
+
 8) git pull origin master  
 
 From ssh://gitosis@example.com:22/projectname
