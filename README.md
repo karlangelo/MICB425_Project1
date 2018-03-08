@@ -23,4 +23,14 @@ Merges your changes with copy from remote repo
 
 5) Change each files listed from 'git status' (Pick the ones where your changes are merged with others)
 
+6) git add .
+
+7) git commit -m "Leave your msg here"
+
+8) git pull
+
+Pulls files that you don't have
+
+9) git push
+
 If these don't work feel free to post msg on Messenger (We'll always have a backup version, so don't worry if goes wrong).
