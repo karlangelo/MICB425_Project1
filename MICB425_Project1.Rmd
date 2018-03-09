@@ -1,0 +1,24 @@
+---
+title: "MICB425_Project1"
+author: "Jonah Lin (30616130)"
+date: "March 9, 2018"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+source("https://bioconductor.org/biocLite.R")  
+biocLite("phyloseq")  
+library(phyloseq)  
+
+load("mothur_phyloseq.RData")
+#load("qiime2_phyloseq.RData")
+
+Tax_Table = mothur@tax_table
+
+
+Tax_DF = data.frame(Tax_Table)
+
+Tax_DF %>% select(Genus) %>% filter(Genus != "uncultured")
+
+```
