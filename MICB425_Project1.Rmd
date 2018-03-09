@@ -6,19 +6,31 @@ output: html_document
 ---
 
 ```{r}
+# Set-up
 library(tidyverse)
 source("https://bioconductor.org/biocLite.R")  
 biocLite("phyloseq")  
-library(phyloseq)  
+library(phyloseq)
+library(data.table)
 
+# Load phyloseq data
 load("mothur_phyloseq.RData")
 #load("qiime2_phyloseq.RData")
 
+# Retrieve tables
 Tax_Table = mothur@tax_table
 
+OTU_Table = mothur@otu_table
 
-Tax_DF = data.frame(Tax_Table)
+Sam_Data = mothur@sam_data
 
-Tax_DF %>% select(Genus) %>% filter(Genus != "uncultured")
+# Transforming into data frames
+OTU_DF <- data.frame(OTU_Table)
+
+Tax_DF <- data.frame(Tax_Table)
+
+Genus_Tax <- Tax_DF %>% select(Genus) %>% filter(Genus != "uncultured", !str_detect(Genus, 'unclassified'))
+
+
 
 ```
