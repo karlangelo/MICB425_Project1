@@ -15,22 +15,53 @@ library(data.table)
 
 # Load phyloseq data
 load("mothur_phyloseq.RData")
-#load("qiime2_phyloseq.RData")
+load("qiime2_phyloseq.RData")
 
 # Retrieve tables
-Tax_Table = mothur@tax_table
+Tax_MTable = mothur@tax_table
 
-OTU_Table = mothur@otu_table
+OTU_MTable = mothur@otu_table
 
-Sam_Data = mothur@sam_data
+Sam_MData = mothur@sam_data
 
-# Transforming into data frames
-OTU_DF <- data.frame(OTU_Table)
+Tax_QM2Table = qiime2@tax_table
 
-Tax_DF <- data.frame(Tax_Table)
+OTU_QM2Table = qiime2@otu_table
 
-Genus_Tax <- Tax_DF %>% select(Genus) %>% filter(Genus != "uncultured", !str_detect(Genus, 'unclassified'))
+Sam_QM2Data = qiime2@sam_data
 
+# Transforming Mothur into data frames
+OTU_MDF <- data.frame(OTU_MTable)
 
+Tax_MDF <- data.frame(Tax_MTable)
+setDT(Tax_MDF, keep.rownames=TRUE)
+colnames(Tax_MDF)[1] <- "OTU"
+
+Genus_MTax <- Tax_MDF %>% select(OTU, Genus) %>% filter(!str_detect(Genus, 'uncultured'), !str_detect(Genus, 'unclassified'))
+
+Genus_MTax_Filtered <- Tax_MDF %>% select(Genus) %>% filter(!str_detect(Genus, 'uncultured'), !str_detect(Genus, 'unclassified'))
+
+Genus_MTax_Count <- data.frame(table(Genus_MTax_Filtered))
+
+Genus_MCount_Filtered <- Genus_MTax_Count %>% filter(Freq >= 5, Freq < 50)
+
+Genus_MCount_Filtered$Genus_MTax_Filtered
+
+# Transforming Qiime2 into data frames
+OTU_QM2DF <- data.frame(OTU_QM2Table)
+
+Tax_QM2DF <- data.frame(Tax_QM2Table)
+setDT(Tax_QM2DF, keep.rownames=TRUE)
+colnames(Tax_QM2DF)[1] <- "OTU"
+
+Genus_QM2Tax <- Tax_QM2DF %>% select(OTU, Genus) %>% filter(!str_detect(Genus, 'uncultured'), !str_detect(Genus, 'unclassified'))
+
+Genus_QM2Tax_Filtered <- Tax_QM2DF %>% select(Genus) %>% filter(!str_detect(Genus, 'uncultured'), !str_detect(Genus, 'unclassified'))
+
+Genus_QM2Tax_Count <- data.frame(table(Genus_QM2Tax_Filtered))
+
+Genus_QM2Count_Filtered <- Genus_QM2Tax_Count %>% filter(Freq >= 5, Freq < 50)
+
+Genus_QM2Count_Filtered$Genus_QM2Tax_Filtered
 
 ```
