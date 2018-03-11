@@ -30,6 +30,12 @@ OTU_QM2Table = qiime2@otu_table
 
 Sam_QM2Data = qiime2@sam_data
 
+# Legend:
+# M = Mothur
+# QM2 = QIIME2
+# DF = Data Frame
+# Tax/OTU/Sam = Taxon, OTU, Sample Data
+
 # Transforming Mothur into data frames --------------------------------------------------MOTHUR CODE BELOW--------------------------------------
 OTU_MDF <- data.frame(OTU_MTable)
 
@@ -37,10 +43,8 @@ Tax_MDF <- data.frame(Tax_MTable)
 setDT(Tax_MDF, keep.rownames=TRUE)
 colnames(Tax_MDF)[1] <- "OTU"
 
-# Fitering out uncultured/unclassified Genus in Mothur (Genus_MTax_Filtered)
+# Fitering out uncultured/unclassified Genus in Mothur
 Genus_MTax <- Tax_MDF %>% select(OTU, Genus) %>% filter(!str_detect(Genus, 'uncultured'), !str_detect(Genus, 'unclassified'))
-
-Genus_MTax_Filtered <- Tax_MDF %>% select(Genus) %>% filter(!str_detect(Genus, 'uncultured'), !str_detect(Genus, 'unclassified'))
 
 # Filtered Results (Less filtered --> More filtered down the list) = Less Filtered (Genus_MCount) and More Filtered (GM_Grp_Fitered)
 Genus_MCount <- data.frame(table(Genus_MTax_Filtered)) %>% filter(Freq >= 5, Freq < 50)
@@ -57,10 +61,8 @@ Tax_QM2DF <- data.frame(Tax_QM2Table)
 setDT(Tax_QM2DF, keep.rownames=TRUE)
 colnames(Tax_QM2DF)[1] <- "OTU"
 
-# Fitering out uncultured/unclassified Genus in Mothur (Genus_QM2Tax_Filtered)
+# Fitering out uncultured/unclassified Genus in Mothur
 Genus_QM2Tax <- Tax_QM2DF %>% select(OTU, Genus) %>% filter(!str_detect(Genus, 'uncultured'), !str_detect(Genus, 'unclassified'))
-
-Genus_QM2Tax_Filtered <- Tax_QM2DF %>% select(Genus) %>% filter(!str_detect(Genus, 'uncultured'), !str_detect(Genus, 'unclassified'))
 
 # Filtered Results (Less filtered --> More filtered down the list) = Less Filtered (Genus_QM2Count) and More Filtered (GQM2_Grp_Fitered)
 Genus_QM2Count <- data.frame(table(Genus_QM2Tax_Filtered)) %>% filter(Freq >= 5, Freq < 50)
@@ -68,6 +70,29 @@ Genus_QM2Count <- data.frame(table(Genus_QM2Tax_Filtered)) %>% filter(Freq >= 5,
 # Genus Names of Filtered
 Genus_QM2Count$Genus_QM2Tax_Filtered
 
-GQM2_Grp_Filtered <- Genus_QM2Count_Filtered %>% filter(!str_detect(Genus_QM2Tax_Filtered, 'group'), !str_detect(Genus_QM2Tax_Filtered, '_ge'), !str_detect(Genus_QM2Tax, 'clade'))
+GQM2_Grp_Filtered <- Genus_QM2Count %>% filter(!str_detect(Genus_QM2Tax_Filtered, 'group'), !str_detect(Genus_QM2Tax_Filtered, '_ge'), !str_detect(Genus_QM2Tax_Filtered, 'clade'))
+
+# WORK . . .
+
+# Data shared by both (Depth/O2 Extracted)
+Sam_DF <- data.frame(Sam_MData)
+setDT(Sam_DF, keep.rownames=FALSE)
+Sam_Data_Filtered <- Sam_DF %>% select(Depth_m, O2_uM)
+
+# Data for Mothur (List of OTU for Planctomyces). Second line is for when you don't trust the first line (LUL)
+Taxon_MData_Filtered <- Tax_MDF %>% select(OTU, Genus) %>% filter(str_detect(Genus, 'Planctomyces'))
+OTU_MList <- Taxon_MData_Filtered %>% select(OTU)
+
+# Data for QIIME2 (List of ASV for Planctomyces). Second line is for when you don't trust the first line (LUL)
+Taxon_QM2Data_Filtered <- Tax_QM2DF %>% select(OTU, Genus) %>% filter(str_detect(Genus, 'Planctomyces'))
+ASV_QM2List <- Taxon_QM2Data_Filtered %>% select(OTU)
+
+# OTU Data for Mothur
+OTU_List <- split(Tax_MDF, seq(nrow(xy.df)))
+OTU_MDF_Filtered <- OTU_MDF[ ,which((names(OTU_MDF) %in% Taxon_MData_Filtered)==TRUE)]
+
+# OTU Data for QIIME2
+OTU_QM2DF_Filtered
+
 
 ```
